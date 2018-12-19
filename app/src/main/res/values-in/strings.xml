@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">MyMovieCatalogue</string>
+    <string name="action_settings">Pengaturan</string>
+    <string name="search">Cari</string>
+    <string name="search_movies">Cari Film</string>
+    <string name="posterfilm">Poster Film</string>
+    <string name="search_backprop">Cari Backprop</string>
+    <string name="change_language">Ganti Bahasa</string>
+    <string name="now_playing">Sedang Diputar</string>
+    <string name="popular">Populer</string>
+    <string name="upcoming">Akan Datang</string>
+    <string name="share_link">Bagikan Link Dengan</string>
+
+</resources>
