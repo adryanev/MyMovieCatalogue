@@ -1,7 +1,7 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.main.adapters.viewholder;
+package com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming;
 
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;

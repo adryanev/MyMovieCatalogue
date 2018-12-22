@@ -1,13 +1,15 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.main.fragment;
+package com.adryanev.dicoding.mymoviecatalogue.ui.main.now_playing;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.core.widget.NestedScrollView;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,54 +20,31 @@ import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseUpcoming;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.adapters.UpcomingAdapter;
-import com.adryanev.dicoding.mymoviecatalogue.views.moviedetail.activity.MovieDetailActivity;
+import com.adryanev.dicoding.mymoviecatalogue.adapters.UpcomingAdapter;
+import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import timber.log.Timber;
 
 public class NowPlayingFragment extends Fragment {
 
-    ApiInterface apiService;
-    List<Result> movieList;
     RecyclerView recyclerView;
     NestedScrollView nestedScrollView;
     UpcomingAdapter upcomingAdapter;
+    NowPlayingViewModel viewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        apiService = RetrofitClient.getClient().create(ApiInterface.class);
     }
     private void prepareData(){
-        apiService.getNowPlaying(1).enqueue(new Callback<ResponseUpcoming>() {
+        viewModel.getNowPlaying(1).observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
             @Override
-            public void onResponse(Call<ResponseUpcoming> call, Response<ResponseUpcoming> response) {
-                movieList = response.body().getResults();
-                upcomingAdapter = new UpcomingAdapter(getContext(),movieList);
-                recyclerView.setAdapter(upcomingAdapter);
-                ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View view) {
-                        Timber.d("Item Clicked: "+movieList.get(position).getId().toString());
-                        intentToDetail(movieList.get(position).getId().toString());
-                    }
-                });
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseUpcoming> call, Throwable t) {
-                Timber.e(t.getLocalizedMessage());
-
+            public void onChanged(List<Result> results) {
+                upcomingAdapter.setMovieList(results);
             }
         });
+
     }
 
     private void intentToDetail(String id) {
@@ -83,6 +62,15 @@ public class NowPlayingFragment extends Fragment {
         nestedScrollView = view.findViewById(R.id.upcoming_scroll);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+        upcomingAdapter = new UpcomingAdapter(getContext());
+        recyclerView.setAdapter(upcomingAdapter);
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View view) {
+                Timber.d("Item Clicked: "+upcomingAdapter.getMovieList().get(position).getId().toString());
+                intentToDetail(upcomingAdapter.getMovieList().get(position).getId().toString());
+            }
+        });
         return view;
     }
 
@@ -90,5 +78,11 @@ public class NowPlayingFragment extends Fragment {
     public void onResume() {
         super.onResume();
         prepareData();
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(NowPlayingViewModel.class);
     }
 }

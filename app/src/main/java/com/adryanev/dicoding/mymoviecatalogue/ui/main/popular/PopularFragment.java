@@ -1,13 +1,15 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.main.fragment;
+package com.adryanev.dicoding.mymoviecatalogue.ui.main.popular;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +18,11 @@ import com.adryanev.dicoding.mymoviecatalogue.R;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseSearch;
+import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
-import com.adryanev.dicoding.mymoviecatalogue.views.ScrollChildLayout;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.adapters.PopularAdapter;
-import com.adryanev.dicoding.mymoviecatalogue.views.moviedetail.activity.MovieDetailActivity;
+import com.adryanev.dicoding.mymoviecatalogue.ui.ScrollChildLayout;
+import com.adryanev.dicoding.mymoviecatalogue.adapters.PopularAdapter;
+import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 
 import java.util.List;
 
@@ -30,11 +33,10 @@ import timber.log.Timber;
 
 public class PopularFragment extends Fragment {
 
-    ApiInterface apiService;
-    List<Search> movieList;
     RecyclerView recyclerView;
     ScrollChildLayout scrollChildLayout;
     PopularAdapter adapter;
+    PopularViewModel viewModel;
 
     public PopularFragment() {
         // Requires empty public constructor
@@ -46,29 +48,14 @@ public class PopularFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        apiService = RetrofitClient.getClient().create(ApiInterface.class);
 
     }
 
     private void prepareData() {
-        apiService.getPopularMovies(1).enqueue(new Callback<ResponseSearch>() {
+        viewModel.getPopular(1).observe(getViewLifecycleOwner(), new Observer<List<Search>>() {
             @Override
-            public void onResponse(Call<ResponseSearch> call, Response<ResponseSearch> response) {
-                movieList = response.body().getResults();
-                adapter = new PopularAdapter(getContext(), movieList, new PopularAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Search item) {
-                        Intent i = new Intent(getActivity(), MovieDetailActivity.class);
-                        i.putExtra("movie_id",item.getId().toString());
-                        startActivity(i);
-                    }
-                });
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseSearch> call, Throwable t) {
-                Timber.e(t.getLocalizedMessage());
+            public void onChanged(List<Search> searches) {
+                adapter.setSearches(searches);
             }
         });
     }
@@ -81,6 +68,16 @@ public class PopularFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(layoutManager);
         scrollChildLayout = (ScrollChildLayout) view.findViewById(R.id.refreshLayout);
+        adapter = new PopularAdapter(getContext());
+        recyclerView.setAdapter(adapter);
+        ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View view) {
+                Intent i = new Intent(getActivity(),MovieDetailActivity.class);
+                i.putExtra("movie_id",adapter.getSearches().get(position).getId().toString());
+                startActivity(i);
+            }
+        });
 
         return view;
     }
@@ -101,4 +98,9 @@ public class PopularFragment extends Fragment {
 
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = ViewModelProviders.of(this).get(PopularViewModel.class);
+    }
 }

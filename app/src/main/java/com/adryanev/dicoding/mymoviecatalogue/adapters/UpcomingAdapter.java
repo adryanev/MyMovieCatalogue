@@ -1,11 +1,10 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.main.adapters;
+package com.adryanev.dicoding.mymoviecatalogue.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,7 @@ import android.view.ViewGroup;
 import com.adryanev.dicoding.mymoviecatalogue.R;
 import com.adryanev.dicoding.mymoviecatalogue.config.Config;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.upcoming.Result;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.adapters.viewholder.UpcomingViewHolder;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingViewHolder;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -22,10 +21,19 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingViewHolder> {
 
     Context context;
     List<Result> movieList;
-    public UpcomingAdapter(Context context, List<Result> movieList){
+    public UpcomingAdapter(Context context){
         this.context = context;
-        this.movieList = movieList;
     }
+
+    public void setMovieList(List<Result> movieList) {
+        this.movieList = movieList;
+        notifyDataSetChanged();
+    }
+
+    public List<Result> getMovieList() {
+        return movieList;
+    }
+
     @NonNull
     @Override
     public UpcomingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -37,7 +45,7 @@ public class UpcomingAdapter extends RecyclerView.Adapter<UpcomingViewHolder> {
     public void onBindViewHolder(@NonNull UpcomingViewHolder upcomingViewHolder, int i) {
         upcomingViewHolder.upcomingJudul.setText(movieList.get(i).getTitle());
         upcomingViewHolder.upcomingDate.setText(movieList.get(i).getReleaseDate());
-        Picasso.get().load(Config.IMAGE_W500+movieList.get(i).getBackdropPath()).into(upcomingViewHolder.upcomingBackdrop);
+        Picasso.get().load(Config.IMAGE_W500+movieList.get(i).getPosterPath()).into(upcomingViewHolder.upcomingBackdrop);
         String id = movieList.get(i).getId().toString();
         String title = movieList.get(i).getTitle();
         String replaced = title.replace(' ','-');

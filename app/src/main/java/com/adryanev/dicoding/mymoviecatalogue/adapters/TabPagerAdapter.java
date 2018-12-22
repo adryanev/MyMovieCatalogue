@@ -1,15 +1,15 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.main.adapters;
+package com.adryanev.dicoding.mymoviecatalogue.adapters;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.adryanev.dicoding.mymoviecatalogue.R;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.fragment.NowPlayingFragment;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.fragment.PopularFragment;
-import com.adryanev.dicoding.mymoviecatalogue.views.main.fragment.UpcomingFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.now_playing.NowPlayingFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.popular.PopularFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingFragment;
 
 import java.util.ArrayList;
 import java.util.List;

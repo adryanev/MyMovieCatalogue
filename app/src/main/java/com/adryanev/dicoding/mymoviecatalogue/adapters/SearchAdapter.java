@@ -1,27 +1,24 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.search.adapter;
+package com.adryanev.dicoding.mymoviecatalogue.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.adryanev.dicoding.mymoviecatalogue.R;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
-import com.adryanev.dicoding.mymoviecatalogue.views.search.viewholder.SearchSuggestionViewHolder;
+import com.adryanev.dicoding.mymoviecatalogue.ui.search.SearchSuggestionViewHolder;
 
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchSuggestionViewHolder> {
-    OnItemClickListener listener;
     private Context ctx;
     private List<Search> searches;
 
-    public SearchAdapter(Context context, List<Search> list, OnItemClickListener listener){
+    public SearchAdapter(Context context){
         this.ctx = context;
-        this.searches = list;
-        this.listener = listener;
     }
     @NonNull
     @Override
@@ -32,7 +29,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchSuggestionViewHold
 
     @Override
     public void onBindViewHolder(@NonNull SearchSuggestionViewHolder searchSuggestionViewHolder, int i) {
-        searchSuggestionViewHolder.bind(searches.get(i),listener);
+        searchSuggestionViewHolder.bind(searches.get(i));
+    }
+
+    public void setSearches(List<Search> searches) {
+        this.searches = searches;
+        notifyDataSetChanged();
+    }
+
+    public List<Search> getSearches() {
+        return searches;
     }
 
     @Override
@@ -42,10 +48,5 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchSuggestionViewHold
         }
         return searches.size();
     }
-
-    public interface OnItemClickListener {
-        void onItemClick(Search item);
-    }
-
 
 }

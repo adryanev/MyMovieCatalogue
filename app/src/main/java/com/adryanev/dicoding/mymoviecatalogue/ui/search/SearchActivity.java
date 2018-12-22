@@ -1,16 +1,16 @@
-package com.adryanev.dicoding.mymoviecatalogue.views.search.activity;
+package com.adryanev.dicoding.mymoviecatalogue.ui.search;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -25,8 +25,8 @@ import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseSearch;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
-import com.adryanev.dicoding.mymoviecatalogue.views.moviedetail.activity.MovieDetailActivity;
-import com.adryanev.dicoding.mymoviecatalogue.views.search.adapter.SearchAdapter;
+import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.activity.MovieDetailActivity;
+import com.adryanev.dicoding.mymoviecatalogue.adapters.SearchAdapter;
 
 import java.util.List;
 
@@ -69,7 +69,7 @@ public class SearchActivity extends AppCompatActivity {
         button = findViewById(R.id.imageButton);
         recyclerView = (RecyclerView) findViewById(R.id.rv_search);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
+//        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
         searchBar.setFocusableInTouchMode(true);
@@ -98,28 +98,28 @@ public class SearchActivity extends AppCompatActivity {
 
     private void prepareData(String query) {
         Timber.d("Query = %s",query);
-        apiService.searchMovies(1,query).enqueue(new Callback<ResponseSearch>() {
-            @Override
-            public void onResponse(Call<ResponseSearch> call, Response<ResponseSearch> response) {
-                movieList = response.body().getResults();
-                SearchAdapter adapter = new SearchAdapter(SearchActivity.this, movieList, new SearchAdapter.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Search item) {
-                        Timber.d(item.getId().toString());
-                        Intent i = new Intent(SearchActivity.this, MovieDetailActivity.class);
-                        i.putExtra("movie_id",item.getId().toString());
-                        searchBar.setText("");
-                        startActivity(i);
-                    }
-                });
-                recyclerView.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<ResponseSearch> call, Throwable t) {
-                Timber.e(t.getLocalizedMessage());
-            }
-        });
+//        apiService.searchMovies(1,query).enqueue(new Callback<ResponseSearch>() {
+//            @Override
+//            public void onResponse(Call<ResponseSearch> call, Response<ResponseSearch> response) {
+//                movieList = response.body().getResults();
+//                SearchAdapter adapter = new SearchAdapter(SearchActivity.this, movieList, new SearchAdapter.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(Search item) {
+//                        Timber.d(item.getId().toString());
+//                        Intent i = new Intent(SearchActivity.this, MovieDetailActivity.class);
+//                        i.putExtra("movie_id",item.getId().toString());
+//                        searchBar.setText("");
+//                        startActivity(i);
+//                    }
+//                });
+//                recyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseSearch> call, Throwable t) {
+//                Timber.e(t.getLocalizedMessage());
+//            }
+//        });
     }
 
     //region Methods keyboard
