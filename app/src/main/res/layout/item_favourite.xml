@@ -1,53 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:layout_margin="8dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="8dp"
-    android:elevation="4dp">
+    android:padding="8dp"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="24dp"
+
+    android:orientation="vertical">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/search_backprop"
+            android:id="@+id/favourite_poster"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:contentDescription="@string/search_backprop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/search_title"
+            android:id="@+id/favourite_judul"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Title"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/search_backprop"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="@tools:sample/lorem" />
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toEndOf="@+id/favourite_poster"
+            app:layout_constraintTop_toTopOf="@+id/favourite_poster" />
 
         <TextView
-            android:id="@+id/search_year"
+            android:id="@+id/favourite_tahun"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.SearchResult.Subtitle"
+            android:text="TextView"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="@+id/search_title"
-            app:layout_constraintTop_toBottomOf="@+id/search_title"
-            tools:text="@tools:sample/us_zipcodes" />
+            app:layout_constraintStart_toStartOf="@+id/favourite_judul"
+            app:layout_constraintTop_toBottomOf="@+id/favourite_judul" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+
+
+</com.google.android.material.card.MaterialCardView>

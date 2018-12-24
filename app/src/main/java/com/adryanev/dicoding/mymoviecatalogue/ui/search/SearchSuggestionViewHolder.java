@@ -2,6 +2,8 @@ package com.adryanev.dicoding.mymoviecatalogue.ui.search;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,14 +15,14 @@ import com.adryanev.dicoding.mymoviecatalogue.adapters.SearchAdapter;
 import com.squareup.picasso.Picasso;
 
 public class SearchSuggestionViewHolder extends RecyclerView.ViewHolder {
-    public ImageView backprop;
+    public CircleImageView backprop;
     public TextView title;
     public TextView year;
     public SearchSuggestionViewHolder(@NonNull View itemView) {
         super(itemView);
-        backprop = (ImageView) itemView.findViewById(R.id.search_backprop);
-        title = (TextView) itemView.findViewById(R.id.search_title);
-        year = (TextView) itemView.findViewById(R.id.search_year);
+        backprop = itemView.findViewById(R.id.search_backprop);
+        title = itemView.findViewById(R.id.search_title);
+        year = itemView.findViewById(R.id.search_year);
 
     }
     public void bind(final Search item) {

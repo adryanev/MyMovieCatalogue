@@ -16,4 +16,14 @@ public class Config {
     public static final String IMAGE_ORIGINAL = IMAGE_ENDPOINT+"original/";
     public static final String URL_MOVIE = "https://www.themoviedb.org/movie/";
 
+    public static class Database{
+        public static final String DB_NAME = "catalogue_db";
+        public static final String TABLE_FAVOURITE = "favourite";
+        public static final String KEY_ID ="id";
+        public static final String KEY_TITLE = "title";
+        public static final String KEY_RELEASE_DATE= "release_date";
+        public static final String KEY_POSTER = "poster";
+
+
+    }
 }

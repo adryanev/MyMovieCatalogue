@@ -11,5 +11,7 @@
     <string name="popular">Popular</string>
     <string name="upcoming">Upcoming</string>
     <string name="share_link">Share Link Using</string>
+    <string name="favourite">Favourite</string>
+    <string name="favourited">Favourited</string>
 
 </resources>

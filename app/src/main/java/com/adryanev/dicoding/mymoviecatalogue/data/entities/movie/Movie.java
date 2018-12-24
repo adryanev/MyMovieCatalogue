@@ -1,4 +1,4 @@
-package com.adryanev.dicoding.mymoviecatalogue.data.rest.response;
+package com.adryanev.dicoding.mymoviecatalogue.data.entities.movie;
 
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.BelongsToCollection;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.Genre;
@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class ResponseMovie {
+public class Movie {
     @SerializedName("adult")
     @Expose
     private Boolean adult;
