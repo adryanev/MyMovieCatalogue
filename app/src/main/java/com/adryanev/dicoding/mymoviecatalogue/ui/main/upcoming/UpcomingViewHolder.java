@@ -2,6 +2,8 @@ package com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import de.hdodenhof.circleimageview.CircleImageView;
+
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -11,7 +13,7 @@ import com.adryanev.dicoding.mymoviecatalogue.R;
 
 public class UpcomingViewHolder extends RecyclerView.ViewHolder {
 
-    public ImageView upcomingBackdrop;
+    public CircleImageView upcomingBackdrop;
     public TextView upcomingJudul;
     public TextView upcomingDate;
     public ImageButton upcomingShare;

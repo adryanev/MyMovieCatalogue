@@ -8,10 +8,17 @@ import android.provider.Settings;
 
 import com.adryanev.dicoding.mymoviecatalogue.adapters.SearchAdapter;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.favourite.FavouriteFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.now_playing.NowPlayingFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.popular.PopularFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingFragment;
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
+import com.adryanev.dicoding.mymoviecatalogue.utils.ActivityUtils;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.core.view.MenuItemCompat;
 import androidx.lifecycle.Observer;
@@ -25,6 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.adryanev.dicoding.mymoviecatalogue.R;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
@@ -36,15 +44,14 @@ import java.util.List;
 
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity{
-    ApiInterface apiInterface;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
     Toolbar toolbar;
-    ViewPager viewPager;
-    TabLayout tabLayout;
     SearchView searchView;
     RecyclerView recyclerView;
     MainViewModel viewModel;
     SearchAdapter adapter;
+    BottomNavigationView bottomNavigationView;
+    FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,11 +59,16 @@ public class MainActivity extends AppCompatActivity{
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewPager = findViewById(R.id.main_view_pager);
+        frameLayout = findViewById(R.id.container_frame);
+        bottomNavigationView = findViewById(R.id.main_bottom_nav);
         recyclerView = findViewById(R.id.main_rv);
         adapter = new SearchAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        if(savedInstanceState == null){
+            ActivityUtils.replaceFragment(getSupportFragmentManager(), new NowPlayingFragment(), R.id.container_frame);
+            frameLayout.setVisibility(View.VISIBLE);
+        }
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View view) {
@@ -65,17 +77,10 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(i);
             }
         });
-        tabLayout = findViewById(R.id.main_tab);
-        setupFragment();
-        apiInterface = RetrofitClient.getClient().create(ApiInterface.class);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
 
-
-    private void setupFragment() {
-        viewPager.setAdapter(new TabPagerAdapter(this, getSupportFragmentManager()));
-        tabLayout.setupWithViewPager(viewPager);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,13 +92,15 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public boolean onMenuItemActionExpand(MenuItem item) {
                     recyclerView.setVisibility(View.VISIBLE);
-                    viewPager.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.GONE);
+                    bottomNavigationView.setVisibility(View.GONE);
                     return true;
                 }
 
                 @Override
                 public boolean onMenuItemActionCollapse(MenuItem item) {
-                    viewPager.setVisibility(View.VISIBLE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                    bottomNavigationView.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);
                     return true;
                 }
@@ -160,5 +167,24 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        int id = menuItem.getItemId();
+        Timber.d("MenuId: %d",id);
+        switch (id){
+            case R.id.action_favourite:
+                ActivityUtils.replaceFragment(getSupportFragmentManager(),new FavouriteFragment(),R.id.container_frame);
+                return true;
+            case R.id.action_now_playing:
+                ActivityUtils.replaceFragment(getSupportFragmentManager(),new NowPlayingFragment(),R.id.container_frame);
+                return true;
+            case R.id.action_popular:
+                ActivityUtils.replaceFragment(getSupportFragmentManager(),new PopularFragment(),R.id.container_frame);
+                return true;
+            case R.id.action_upcoming:
+                ActivityUtils.replaceFragment(getSupportFragmentManager(),new UpcomingFragment(),R.id.container_frame);
+                return true;
+        }
+        return false;
+    }
 }

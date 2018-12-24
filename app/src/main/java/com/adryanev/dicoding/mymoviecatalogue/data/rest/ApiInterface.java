@@ -1,6 +1,6 @@
 package com.adryanev.dicoding.mymoviecatalogue.data.rest;
 
-import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseMovie;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.Movie;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseSearch;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseUpcoming;
 
@@ -18,7 +18,7 @@ public interface ApiInterface {
                                        @Query("query") String movie);
 
     @GET("movie/{movie_id}")
-    Call<ResponseMovie> getMovie(@Path("movie_id") String movieId);
+    Call<Movie> getMovie(@Path("movie_id") String movieId);
 
     @GET("movie/upcoming")
     Call <ResponseUpcoming> getUpcomingMovies(@Query("page") int page);

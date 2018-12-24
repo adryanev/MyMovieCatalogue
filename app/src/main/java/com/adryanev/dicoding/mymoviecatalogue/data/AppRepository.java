@@ -5,12 +5,15 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.adryanev.dicoding.mymoviecatalogue.data.dao.FavouriteDao;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite.Favourite;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.upcoming.Result;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
-import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseMovie;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.Movie;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseSearch;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseUpcoming;
+import com.adryanev.dicoding.mymoviecatalogue.utils.AppExecutors;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
 
 import java.util.List;
@@ -29,10 +32,16 @@ import timber.log.Timber;
  */
 public class AppRepository {
 
+    AppExecutors executors;
+    private FavouriteDao favouriteDao;
+    LiveData<List<Favourite>> favouriteList;
     private ApiInterface service;
     private static AppRepository INSTANCE;
     public AppRepository(Application application){
+        AppDatabase db = AppDatabase.getDatabase(application);
+        favouriteDao = db.favouriteDao();
         service = RetrofitClient.getClient().create(ApiInterface.class);
+        executors = new AppExecutors();
     }
    public MutableLiveData<List<Result>> getUpcoming(int pages){
        final MutableLiveData<List<Result>> data = new MutableLiveData<>();
@@ -108,22 +117,53 @@ public class AppRepository {
         return data;
    }
 
-   public MutableLiveData<ResponseMovie> getMovie(final String id){
-        final MutableLiveData<ResponseMovie> data = new MutableLiveData<>();
-        service.getMovie(id).enqueue(new Callback<ResponseMovie>() {
+   public MutableLiveData<Movie> getMovie(final String id){
+        final MutableLiveData<Movie> data = new MutableLiveData<>();
+        service.getMovie(id).enqueue(new Callback<Movie>() {
             @Override
-            public void onResponse(Call<ResponseMovie> call, Response<ResponseMovie> response) {
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
                     Timber.d("Sukses mendapatkan movie: %s",id);
                     data.setValue(response.body());
 
             }
 
             @Override
-            public void onFailure(Call<ResponseMovie> call, Throwable t) {
+            public void onFailure(Call<Movie> call, Throwable t) {
                 Timber.e(t);
             }
         });
         return data;
    }
+
+   public LiveData<List<Favourite>> getFavourite(){
+        favouriteList = favouriteDao.getFavourites();
+        return favouriteList;
+   }
+
+   public void insertFavourite(final Favourite favourite){
+        Runnable insert = new Runnable() {
+            @Override
+            public void run() {
+                favouriteDao.insert(favourite);
+            }
+        };
+        executors.diskIO().execute(insert);
+   }
+
+   public void removeFavourite(final Favourite favourite){
+        Runnable remove = new Runnable() {
+            @Override
+            public void run() {
+                favouriteDao.delete(favourite.getId());
+            }
+        };
+        executors.diskIO().execute(remove);
+   }
+
+   public LiveData<Favourite> searchFavourite(Integer id){
+        LiveData<Favourite> fav = favouriteDao.searchFavourite(id);
+        return fav;
+   }
+
 
 }

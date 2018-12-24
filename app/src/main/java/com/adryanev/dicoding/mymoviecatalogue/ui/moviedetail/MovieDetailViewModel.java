@@ -4,14 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.adryanev.dicoding.mymoviecatalogue.data.AppRepository;
-import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseMovie;
-
-import java.util.List;
-
-import okhttp3.Response;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite.Favourite;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.Movie;
 
 /**
  * Project: MyMovieCatalogue
@@ -22,14 +20,21 @@ import okhttp3.Response;
  */
 public class MovieDetailViewModel extends AndroidViewModel {
     AppRepository repository;
-    MutableLiveData<ResponseMovie> data;
+    MutableLiveData<Movie> data;
+    LiveData<Favourite> dataFav;
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
         repository = new AppRepository(application);
     }
 
-    public MutableLiveData<ResponseMovie> getMovie(String id){
+    public MutableLiveData<Movie> getMovie(String id){
         data = repository.getMovie(id);
         return data;
     }
+
+    public LiveData<Favourite>getDataFav(Integer id){
+        dataFav = repository.searchFavourite(id);
+        return dataFav;
+    }
+
 }

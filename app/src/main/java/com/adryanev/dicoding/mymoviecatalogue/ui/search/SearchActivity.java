@@ -25,7 +25,7 @@ import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
 import com.adryanev.dicoding.mymoviecatalogue.data.rest.response.ResponseSearch;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
-import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.activity.MovieDetailActivity;
+import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 import com.adryanev.dicoding.mymoviecatalogue.adapters.SearchAdapter;
 
 import java.util.List;
