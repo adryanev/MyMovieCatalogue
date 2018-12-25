@@ -23,6 +23,7 @@ import com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite.Favourite;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.favourite.FavouriteViewModel;
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -31,15 +32,19 @@ public class FavouriteFragment extends Fragment {
     private FavouriteViewModel viewModel;
     RecyclerView recyclerView;
     FavouriteAdapter adapter;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.getDataFavourite().observe(getViewLifecycleOwner(), new Observer<List<Favourite>>() {
+        shimmerFrameLayout.startShimmer();
+        viewModel.getDataFavourite().observe(getActivity(), new Observer<List<Favourite>>() {
             @Override
             public void onChanged(List<Favourite> favourites) {
                 adapter.setFavouritesList(favourites);
                 Timber.d("Favourite Adapter Size: %d",adapter.getItemCount());
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             }
         });
     }
@@ -49,6 +54,7 @@ public class FavouriteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favourite,container,false);
         recyclerView = view.findViewById(R.id.favourite_rv);
+        shimmerFrameLayout = view.findViewById(R.id.favourite_shimmer);
         adapter = new FavouriteAdapter(getContext());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -72,6 +78,6 @@ public class FavouriteFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(FavouriteViewModel.class);
     }
 }
