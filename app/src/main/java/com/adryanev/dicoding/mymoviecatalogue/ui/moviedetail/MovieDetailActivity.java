@@ -9,8 +9,11 @@ import androidx.annotation.Nullable;
 
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite.Favourite;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.favourite.FavouriteViewModel;
+import com.adryanev.dicoding.mymoviecatalogue.utils.SnackBarUtils;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,6 +44,7 @@ import java.util.List;
 
 public class MovieDetailActivity extends AppCompatActivity {
     ImageView backprop;
+    CoordinatorLayout coord;
     Toolbar toolbarDetail;
     NestedScrollView scrollView;
     FloatingActionButton fab;
@@ -97,9 +101,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                             fav.setTitle(m.getTitle());
                             fav.setReleaseDate(m.getReleaseDate());
                             favouriteViewModel.insertFavourite(fav);
+                            SnackBarUtils.showShortSnackBar(coord,getString(R.string.add_favourite));
                         }
                         else{
                             favouriteViewModel.removeFavourite(favourite);
+                            SnackBarUtils.showShortSnackBar(coord, getString(R.string.remove_favourite));
                         }
                     }
                 });
@@ -123,7 +129,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     private void setDataToView(final Movie movie) {
         Picasso.get().load(Config.IMAGE_ORIGINAL+ movie.getBackdropPath()).into(backprop);
-        judulFilm.setText(movie.getOriginalTitle());
+        judulFilm.setText(movie.getTitle());
         tahunRilis.setText(movie.getReleaseDate());
         genreText.setText(genreString(movie.getGenres()));
         revenueText.setText(currency(movie.getRevenue()));
@@ -161,6 +167,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     private void prepareView() {
+        coord = findViewById(R.id.detail_coord);
         backprop = findViewById(R.id.backdrop);
         toolbarDetail = findViewById(R.id.toolbar_detail);
         scrollView = findViewById(R.id.detail_scroll_view);

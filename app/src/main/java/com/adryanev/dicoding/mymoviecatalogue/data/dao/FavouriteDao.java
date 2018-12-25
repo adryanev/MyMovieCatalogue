@@ -1,5 +1,7 @@
 package com.adryanev.dicoding.mymoviecatalogue.data.dao;
 
+import android.database.Cursor;
+
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite.Favourite;
 
 import java.util.List;
@@ -28,5 +30,8 @@ public interface FavouriteDao {
 
     @Query("SELECT * FROM favourite WHERE id = :id")
     LiveData<Favourite> searchFavourite(Integer id);
+
+    @Query("SELECT* FROM favourite")
+    Cursor getFavouritesAll();
 
 }

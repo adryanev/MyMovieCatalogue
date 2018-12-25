@@ -47,7 +47,6 @@ dependencies {
     implementation "androidx.room:room-runtime:2.1.0-alpha03"
     annotationProcessor "androidx.room:room-compiler:2.1.0-alpha03"
     implementation 'de.hdodenhof:circleimageview:2.2.0'
-    implementation 'com.robertlevonyan.view:MaterialChipView:1.2.5'
 
 
 

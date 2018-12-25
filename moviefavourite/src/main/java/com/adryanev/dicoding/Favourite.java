@@ -1,27 +1,18 @@
-package com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite;
+package com.adryanev.dicoding;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.adryanev.dicoding.mymoviecatalogue.config.Config;
-
-import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-@Entity(tableName = Config.Database.TABLE_FAVOURITE)
 public class Favourite implements Parcelable {
 
-    @PrimaryKey
-    @ColumnInfo(name = Config.Database.KEY_ID)
+
     private Integer id;
-    @ColumnInfo(name = Config.Database.KEY_TITLE)
+
     private String title;
-    @ColumnInfo(name = Config.Database.KEY_RELEASE_DATE)
+
     private String releaseDate;
-    @ColumnInfo(name = Config.Database.KEY_POSTER)
     private String poster;
 
     public Favourite() {
@@ -61,12 +52,18 @@ public class Favourite implements Parcelable {
 
     public static Favourite fromContentValues(ContentValues values){
         final Favourite favourite = new Favourite();
-        if(values.containsKey(Config.Database.KEY_ID)) favourite.setId(values.getAsInteger(Config.Database.KEY_ID));
-        if(values.containsKey(Config.Database.KEY_POSTER)) favourite.setPoster(values.getAsString(Config.Database.KEY_POSTER));
-        if(values.containsKey(Config.Database.KEY_TITLE)) favourite.setTitle(values.getAsString(Config.Database.KEY_TITLE));
-        if(values.containsKey(Config.Database.KEY_RELEASE_DATE)) favourite.setTitle(values.getAsString(Config.Database.KEY_RELEASE_DATE));
+        if(values.containsKey(DatabaseContract.FavouriteColumns._ID)) favourite.setId(values.getAsInteger(DatabaseContract.FavouriteColumns._ID));
+        if(values.containsKey(DatabaseContract.FavouriteColumns.KEY_POSTER)) favourite.setPoster(values.getAsString(DatabaseContract.FavouriteColumns.KEY_POSTER));
+        if(values.containsKey(DatabaseContract.FavouriteColumns.KEY_TITLE)) favourite.setTitle(values.getAsString(DatabaseContract.FavouriteColumns.KEY_TITLE));
+        if(values.containsKey(DatabaseContract.FavouriteColumns.KEY_RELEASE_DATE)) favourite.setTitle(values.getAsString(DatabaseContract.FavouriteColumns.KEY_RELEASE_DATE));
 
         return favourite;
+    }
+    public Favourite(Cursor cursor){
+        this.id = DatabaseContract.getColumnInt(cursor,DatabaseContract.FavouriteColumns._ID);
+        this.poster = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_POSTER);
+        this.title = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_TITLE);
+        this.releaseDate = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_RELEASE_DATE);
     }
 
     @Override

@@ -12,6 +12,8 @@
     <string name="upcoming">Upcoming</string>
     <string name="share_link">Share Link Using</string>
     <string name="favourite">Favourite</string>
+    <string name="add_favourite">Added to Favourite List</string>
+    <string name="remove_favourite">Removed from Favourite List</string>
     <string name="favourited">Favourited</string>
 
 </resources>
