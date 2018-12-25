@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_now_playing"
+        android:title="@string/now_playing"
+        android:icon="@drawable/ic_access_time_black_24dp"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        />
+    <item
+        android:id="@+id/action_popular"
+        android:title="@string/popular"
+        android:icon="@drawable/ic_trending_up_black_24dp"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        />
+    <item
+        android:id="@+id/action_upcoming"
+        android:title="@string/upcoming"
+        android:icon="@drawable/ic_whatshot_black_24dp"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        />
+    <item
+        android:id="@+id/action_favourite"
+        android:title="@string/favourite"
+        android:icon="@drawable/ic_favorite_black_24dp"
+        app:showAsAction="ifRoom"
+        android:enabled="true"
+        />
+
+
+
+</menu>

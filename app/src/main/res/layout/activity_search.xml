@@ -1,11 +1,11 @@
-<android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/search_coordinator"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay"
@@ -14,7 +14,7 @@
         android:fitsSystemWindows="true">
 
 
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_search"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -23,8 +23,8 @@
                 />
 
 
-    </android.support.design.widget.AppBarLayout>
-    <android.support.constraint.ConstraintLayout
+    </com.google.android.material.appbar.AppBarLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:id="@+id/constraint_search"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -58,7 +58,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_search_black_24dp" />
 
-        <android.support.v4.widget.NestedScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/search_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,20 +70,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_edit_text">
 
-            <android.support.v7.widget.RecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/item_search_suggestion">
 
-            </android.support.v7.widget.RecyclerView>
-        </android.support.v4.widget.NestedScrollView>
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.core.widget.NestedScrollView>
 
-    </android.support.constraint.ConstraintLayout>
-
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

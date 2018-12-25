@@ -11,5 +11,10 @@
     <string name="popular">Populer</string>
     <string name="upcoming">Akan Datang</string>
     <string name="share_link">Bagikan Link Dengan</string>
+    <string name="favourite">Favorit</string>
+    <string name="favourited">Difavoritkan</string>
+    <string name="add_favourite">Ditambahkan ke Favorit</string>
+    <string name="remove_favourite">Dihapus dari Favorit</string>
+
 
 </resources>

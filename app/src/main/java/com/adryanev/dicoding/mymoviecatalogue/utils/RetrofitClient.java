@@ -1,6 +1,7 @@
 package com.adryanev.dicoding.mymoviecatalogue.utils;
 
 import com.adryanev.dicoding.mymoviecatalogue.config.Config;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.io.IOException;
 
@@ -39,7 +40,11 @@ public class RetrofitClient {
                 }
             };
 
-            OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).addInterceptor(urlInterceptor).build();
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(interceptor)
+                    .addInterceptor(urlInterceptor)
+                    .addNetworkInterceptor(new StethoInterceptor())
+                    .build();
 
             retrofit = new Retrofit.Builder().baseUrl(Config.API_ENDPOINT).client(client).addConverterFactory(GsonConverterFactory.create()).build();
            return retrofit;

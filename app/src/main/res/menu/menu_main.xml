@@ -1,13 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.adryanev.dicoding.mymoviecatalogue.views.main.activities.MainActivity">
+    tools:context="com.adryanev.dicoding.mymoviecatalogue.ui.main.MainActivity">
     <item
         android:id="@+id/action_search"
         android:orderInCategory="100"
         android:icon="@drawable/ic_search_white_24dp"
-        app:showAsAction="always"
-        android:title="@string/search_movies" />
+        app:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/search_movies"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
     <item
         android:id="@+id/action_setting"
         android:icon="@drawable/ic_search_white_24dp"

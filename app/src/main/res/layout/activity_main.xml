@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/coordinator_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".views.main.activities.MainActivity">
+    tools:context=".ui.main.MainActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <android.support.v7.widget.Toolbar
+            <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -22,19 +22,19 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </FrameLayout>
-    </android.support.design.widget.AppBarLayout>
-    <android.support.v4.view.ViewPager
-        android:id="@+id/main_view_pager"
-        android:layout_marginTop="?actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <android.support.design.widget.TabLayout
-            android:id="@+id/main_tab"
-            android:layout_width="match_parent"
-            android:theme="@style/Widget.MaterialComponents.TabLayout"
-            android:layout_height="wrap_content">
-    </android.support.design.widget.TabLayout>
-    </android.support.v4.view.ViewPager>
+    </com.google.android.material.appbar.AppBarLayout>
+    <!--<androidx.viewpager.widget.ViewPager-->
+        <!--android:id="@+id/main_view_pager"-->
+        <!--android:layout_marginTop="?actionBarSize"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<com.google.android.material.tabs.TabLayout-->
+            <!--android:id="@+id/main_tab"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:theme="@style/Widget.MaterialComponents.TabLayout"-->
+            <!--android:layout_height="wrap_content">-->
+    <!--</com.google.android.material.tabs.TabLayout>-->
+    <!--</androidx.viewpager.widget.ViewPager>-->
 
 
     <FrameLayout
@@ -45,5 +45,26 @@
 
     </FrameLayout>
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/main_bottom_nav"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:labelVisibilityMode="selected"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+        app:menu="@menu/menu_bottom_nav" />
 
-</android.support.design.widget.CoordinatorLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_rv"
+        tools:listitem="@layout/item_search_suggestion"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+        >
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
