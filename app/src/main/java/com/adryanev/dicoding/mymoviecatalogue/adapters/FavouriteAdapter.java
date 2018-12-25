@@ -42,6 +42,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull FavouriteViewHolder holder, int position) {
+
         holder.title.setText(favouritesList.get(position).getTitle());
         holder.tahun.setText(favouritesList.get(position).getReleaseDate());
         Picasso.get().load(Config.IMAGE_W185+favouritesList.get(position).getPoster()).into(holder.poster);

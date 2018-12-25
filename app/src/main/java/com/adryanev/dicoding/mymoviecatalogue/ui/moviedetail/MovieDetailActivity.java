@@ -50,18 +50,23 @@ public class MovieDetailActivity extends AppCompatActivity {
     FloatingActionButton fab;
     TextView judulFilm, tahunRilis, genreText, revenueText, durationText, countryText,tagline, overview;
     RatingBar ratingBar;
+    MovieDetailViewModelFactory factory;
     MovieDetailViewModel viewModel;
     FavouriteViewModel favouriteViewModel;
     MaterialButton fav;
     Movie m;
-
+    String movieId;
     boolean isFavourite = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        viewModel= ViewModelProviders.of(this).get(MovieDetailViewModel.class);
+        Intent i = getIntent();
+        movieId = i.getStringExtra("movie_id");
+        factory = new MovieDetailViewModelFactory(getApplication(),movieId);
+        viewModel= ViewModelProviders.of(this,factory).get(MovieDetailViewModel.class);
         favouriteViewModel = ViewModelProviders.of(this).get(FavouriteViewModel.class);
+
         prepareView();
 
 
@@ -71,9 +76,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Intent i = getIntent();
-        String movieId = i.getStringExtra("movie_id");
-        getData(movieId);
+        getData();
         viewModel.getDataFav(Integer.parseInt(movieId)).observe(this, new Observer<Favourite>() {
             @Override
             public void onChanged(final Favourite favourite) {
@@ -115,12 +118,13 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     }
 
-    private void getData(String movieId) {
-        viewModel.getMovie(movieId).observe(this, new Observer<Movie>() {
+    private void getData() {
+        viewModel.getMovie().observe(this, new Observer<Movie>() {
             @Override
             public void onChanged(Movie movie) {
                 setDataToView(movie);
                 m = movie;
+
             }
         });
 

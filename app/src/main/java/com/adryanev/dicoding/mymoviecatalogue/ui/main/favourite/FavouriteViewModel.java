@@ -18,10 +18,11 @@ public class FavouriteViewModel extends AndroidViewModel {
     public FavouriteViewModel(@NonNull Application application) {
         super(application);
         repository = new AppRepository(application);
+        dataFavourite = repository.getFavourite();
+
     }
 
     public LiveData<List<Favourite>> getDataFavourite() {
-        dataFavourite = repository.getFavourite();
         return dataFavourite;
     }
 

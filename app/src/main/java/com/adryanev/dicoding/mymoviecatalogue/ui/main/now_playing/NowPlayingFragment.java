@@ -22,6 +22,7 @@ import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
 import com.adryanev.dicoding.mymoviecatalogue.adapters.UpcomingAdapter;
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 import timber.log.Timber;
@@ -29,19 +30,21 @@ import timber.log.Timber;
 public class NowPlayingFragment extends Fragment {
 
     RecyclerView recyclerView;
-    NestedScrollView nestedScrollView;
     UpcomingAdapter upcomingAdapter;
     NowPlayingViewModel viewModel;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
     private void prepareData(){
-        viewModel.getNowPlaying(1).observe(getViewLifecycleOwner(), new Observer<List<Result>>() {
+        viewModel.getNowPlaying().observe(getActivity(), new Observer<List<Result>>() {
             @Override
             public void onChanged(List<Result> results) {
                 upcomingAdapter.setMovieList(results);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             }
         });
 
@@ -57,9 +60,9 @@ public class NowPlayingFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_upcoming,container,false);
-        recyclerView = view.findViewById(R.id.upcoming_rv);
-        nestedScrollView = view.findViewById(R.id.upcoming_scroll);
+        View view = inflater.inflate(R.layout.fragment_now_playing,container,false);
+        shimmerFrameLayout = view.findViewById(R.id.now_playing_shimmer);
+        recyclerView = view.findViewById(R.id.now_playing_rv);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         upcomingAdapter = new UpcomingAdapter(getContext());
@@ -77,12 +80,13 @@ public class NowPlayingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        shimmerFrameLayout.startShimmer();
         prepareData();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(NowPlayingViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(NowPlayingViewModel.class);
     }
 }

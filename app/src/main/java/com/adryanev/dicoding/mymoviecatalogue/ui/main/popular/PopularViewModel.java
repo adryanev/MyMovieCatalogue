@@ -25,9 +25,10 @@ public class PopularViewModel extends AndroidViewModel {
     public PopularViewModel(@NonNull Application application) {
         super(application);
         repository = new AppRepository(application);
+        data = repository.getPopular(1);
+
     }
-    public MutableLiveData<List<Search>> getPopular(int pages){
-        data = repository.getPopular(pages);
+    public MutableLiveData<List<Search>> getPopular(){
         return data;
     }
 }

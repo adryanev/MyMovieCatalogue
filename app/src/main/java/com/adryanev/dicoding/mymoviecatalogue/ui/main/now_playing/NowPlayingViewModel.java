@@ -19,14 +19,15 @@ import java.util.List;
  * Time: 2:15 PM
  */
 public class NowPlayingViewModel extends AndroidViewModel {
-    AppRepository repository;
-    MutableLiveData<List<Result>> data;
+    private AppRepository repository;
+    private MutableLiveData<List<Result>> data;
     public NowPlayingViewModel(@NonNull Application application) {
         super(application);
         repository = new AppRepository(application);
+        data = repository.getNowPlaying(1);
+
     }
-    public MutableLiveData<List<Result>> getNowPlaying(int pages){
-        data = repository.getNowPlaying(pages);
+    public MutableLiveData<List<Result>> getNowPlaying(){
         return data;
     }
 }
