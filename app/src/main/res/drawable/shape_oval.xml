@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+
+    <size
+        android:height="@dimen/placeholder_image"
+        android:width="@dimen/placeholder_image" />
+    <solid android:color="@color/placeholder_bg">
+
+    </solid>
+</shape>

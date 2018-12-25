@@ -39,6 +39,7 @@ import com.adryanev.dicoding.mymoviecatalogue.data.rest.ApiInterface;
 import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
 import com.adryanev.dicoding.mymoviecatalogue.adapters.TabPagerAdapter;
 import com.adryanev.dicoding.mymoviecatalogue.ui.search.SearchActivity;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SearchAdapter adapter;
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         adapter = new SearchAdapter(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
         if(savedInstanceState == null){
             ActivityUtils.replaceFragment(getSupportFragmentManager(), new NowPlayingFragment(), R.id.container_frame);
             frameLayout.setVisibility(View.VISIBLE);

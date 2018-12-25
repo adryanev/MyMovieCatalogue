@@ -23,6 +23,8 @@ import com.adryanev.dicoding.mymoviecatalogue.utils.RetrofitClient;
 import com.adryanev.dicoding.mymoviecatalogue.ui.ScrollChildLayout;
 import com.adryanev.dicoding.mymoviecatalogue.adapters.PopularAdapter;
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
+import com.facebook.shimmer.Shimmer;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.List;
 
@@ -37,6 +39,7 @@ public class PopularFragment extends Fragment {
     ScrollChildLayout scrollChildLayout;
     PopularAdapter adapter;
     PopularViewModel viewModel;
+    ShimmerFrameLayout shimmerFrameLayout;
 
     public PopularFragment() {
         // Requires empty public constructor
@@ -51,11 +54,13 @@ public class PopularFragment extends Fragment {
 
     }
 
-    private void prepareData() {
-        viewModel.getPopular(1).observe(getViewLifecycleOwner(), new Observer<List<Search>>() {
+    private void prepareData() { ;
+        viewModel.getPopular().observe(getActivity(), new Observer<List<Search>>() {
             @Override
             public void onChanged(List<Search> searches) {
                 adapter.setSearches(searches);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             }
         });
     }
@@ -64,10 +69,12 @@ public class PopularFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_popular,container,false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.rv_main);
+        shimmerFrameLayout = view.findViewById(R.id.popular_shimmer);
+
+        recyclerView = view.findViewById(R.id.rv_main);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(),2);
         recyclerView.setLayoutManager(layoutManager);
-        scrollChildLayout = (ScrollChildLayout) view.findViewById(R.id.refreshLayout);
+        scrollChildLayout = view.findViewById(R.id.refreshLayout);
         adapter = new PopularAdapter(getContext());
         recyclerView.setAdapter(adapter);
         ItemClickSupport.addTo(recyclerView).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
@@ -85,6 +92,8 @@ public class PopularFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        shimmerFrameLayout.startShimmer();
+
         prepareData();
         scrollChildLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -101,6 +110,6 @@ public class PopularFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(this).get(PopularViewModel.class);
+        viewModel = ViewModelProviders.of(getActivity()).get(PopularViewModel.class);
     }
 }

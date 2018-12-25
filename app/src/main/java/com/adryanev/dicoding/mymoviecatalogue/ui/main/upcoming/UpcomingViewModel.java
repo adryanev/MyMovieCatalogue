@@ -24,9 +24,10 @@ public class UpcomingViewModel extends AndroidViewModel {
     public UpcomingViewModel(@NonNull Application application) {
         super(application);
         repository = new AppRepository(application);
+        data = repository.getUpcoming(1);
+
     }
-    public MutableLiveData<List<Result>> getUpcoming(int pages){
-        data = repository.getUpcoming(pages);
+    public MutableLiveData<List<Result>> getUpcoming(){
         return data;
     }
 }
