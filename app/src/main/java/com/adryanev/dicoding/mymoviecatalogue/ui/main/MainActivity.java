@@ -190,8 +190,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     }
                     else{
                         Timber.d("Release Not Today: %s (%s)",rs.getTitle(),rs.getReleaseDate());
-
-
                     }
 
                 }

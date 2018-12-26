@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">MyMovieCatalogue</string>
-    <string name="action_settings">Settings</string>
-    <string name="search">Search</string>
     <string name="search_movies">Search Movies</string>
     <string name="posterfilm">posterFilm</string>
     <string name="search_backprop">search backprop</string>
@@ -16,7 +14,6 @@
     <string name="remove_favourite">Removed from Favourite List</string>
     <string name="favourited">Favourited</string>
     <string name="appwidget_text">My Favourite Movie</string>
-    <string name="add_widget">Add widget</string>
     <string name="empty_text">Favourite List Empty</string>
     <string name="daily_reminder">Have you visit us today?</string>
     <string name="release_today_msg">Now Release Today %1$s </string>

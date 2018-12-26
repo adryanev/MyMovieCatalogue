@@ -2,7 +2,6 @@
 <resources>
     <string name="empty_text">Favourite List Empty</string>
     <string name="appwidget_text">My Favourite Movie</string>
-    <string name="add_widget">Add widget</string>
 
 
 </resources>

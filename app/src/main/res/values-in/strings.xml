@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">MyMovieCatalogue</string>
-    <string name="action_settings">Pengaturan</string>
-    <string name="search">Cari</string>
     <string name="search_movies">Cari Film</string>
     <string name="posterfilm">Poster Film</string>
     <string name="search_backprop">Cari Backprop</string>
@@ -17,7 +15,6 @@
     <string name="remove_favourite">Dihapus dari Favorit</string>
     <string name="empty_text">Favorit Kosong</string>
     <string name="appwidget_text">Film Favorit</string>
-    <string name="add_widget">Tambah widget</string>
     <string name="daily_reminder">Sudahkah mengunjungi kami hari ini?</string>
     <string name="release_today_msg">Rilis Hari ini: %1$s</string>
 

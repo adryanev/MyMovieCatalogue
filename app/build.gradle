@@ -14,11 +14,9 @@ android {
     buildTypes {
         debug {
             buildConfigField 'String', "ApiKey", MovieDbKey
-            resValue 'string', 'api_key', MovieDbKey
         }
         release {
             buildConfigField 'String', "ApiKey", MovieDbKey
-            resValue 'string', 'api_key', MovieDbKey
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
