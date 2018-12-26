@@ -18,5 +18,7 @@
     <string name="appwidget_text">My Favourite Movie</string>
     <string name="add_widget">Add widget</string>
     <string name="empty_text">Favourite List Empty</string>
+    <string name="daily_reminder">Have you visit us today?</string>
+    <string name="release_today_msg">Now Release Today %1$s </string>
 
 </resources>

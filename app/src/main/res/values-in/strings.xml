@@ -18,6 +18,8 @@
     <string name="empty_text">Favorit Kosong</string>
     <string name="appwidget_text">Film Favorit</string>
     <string name="add_widget">Tambah widget</string>
+    <string name="daily_reminder">Sudahkah mengunjungi kami hari ini?</string>
+    <string name="release_today_msg">Rilis Hari ini: %1$s</string>
 
 
 </resources>
