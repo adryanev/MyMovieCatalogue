@@ -15,6 +15,9 @@
     <string name="favourited">Difavoritkan</string>
     <string name="add_favourite">Ditambahkan ke Favorit</string>
     <string name="remove_favourite">Dihapus dari Favorit</string>
+    <string name="empty_text">Favorit Kosong</string>
+    <string name="appwidget_text">Film Favorit</string>
+    <string name="add_widget">Tambah widget</string>
 
 
 </resources>
