@@ -25,9 +25,9 @@ import timber.log.Timber;
 public class ReleaseTodayReceiver extends BroadcastReceiver {
 
 
-    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    public static final String NOTIFICATION_CHANNEL_ID = "1000011";
 
-    private static int notifId = 1000;
+    private static int NOTIFICATION_ID = 1234;
 
 
     @Override
@@ -56,21 +56,21 @@ public class ReleaseTodayReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_access_alarm_black_24dp)
                 .setContentTitle(title)
-                .setContentIntent(pendingIntent)
-                .setContentText(context.getString(R.string.release_today_msg, title))
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setColor(ContextCompat.getColor(context, android.R.color.transparent))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
+                .setContentIntent(pendingIntent)
+                .setContentText(context.getString(R.string.release_today_msg, title))
                 .setSound(alarmRingtone);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
             notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLightColor(Color.YELLOW);
             notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 100});
 
             builder.setChannelId(NOTIFICATION_CHANNEL_ID);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -87,7 +87,7 @@ public class ReleaseTodayReceiver extends BroadcastReceiver {
             Intent intent = new Intent(context, ReleaseTodayReceiver.class);
             intent.putExtra("movie_id", movies.getId().toString());
             intent.putExtra("title", movies.getTitle());
-            intent.putExtra("id", notifId);
+            intent.putExtra("id", NOTIFICATION_ID);
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -98,9 +98,7 @@ public class ReleaseTodayReceiver extends BroadcastReceiver {
 
             int SDK_INT = Build.VERSION.SDK_INT;
             if (SDK_INT > Build.VERSION_CODES.KITKAT && SDK_INT < Build.VERSION_CODES.M) {
-                alarmManager.setInexactRepeating(
-                        AlarmManager.RTC_WAKEUP,
-                        calendar.getTimeInMillis() + delay,
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,  calendar.getTimeInMillis() + delay,
                         AlarmManager.INTERVAL_DAY,
                         pendingIntent
                 );
@@ -108,7 +106,7 @@ public class ReleaseTodayReceiver extends BroadcastReceiver {
                 alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
                         calendar.getTimeInMillis() + delay, pendingIntent);
             }
-            notifId += 1;
+            NOTIFICATION_ID += 1;
             delay += 5000;
 
     }
@@ -120,10 +118,6 @@ public class ReleaseTodayReceiver extends BroadcastReceiver {
 
     private static PendingIntent getPendingIntent(Context context) {
         Intent alarmIntent = new Intent(context, ReleaseTodayReceiver.class);
-
-        boolean isAlarmOn = (PendingIntent.getBroadcast(context, notifId, alarmIntent,
-                PendingIntent.FLAG_NO_CREATE) != null);
-
 
         return PendingIntent.getBroadcast(context, 101, alarmIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);

@@ -48,22 +48,22 @@ public class DailyReminderReceiver extends BroadcastReceiver {
         Uri alarmRingtone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.drawable.ic_access_alarm_black_24dp)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setColor(ContextCompat.getColor(context, android.R.color.transparent))
+                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .setContentTitle(title)
                 .setContentText(message)
                 .setContentIntent(pendingIntent)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
-                .setColor(ContextCompat.getColor(context, android.R.color.transparent))
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
                 .setSound(alarmRingtone);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
             notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.setLightColor(Color.YELLOW);
             notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 1400});
 
             builder.setChannelId(NOTIFICATION_CHANNEL_ID);
             notificationManager.createNotificationChannel(notificationChannel);
@@ -85,14 +85,10 @@ public class DailyReminderReceiver extends BroadcastReceiver {
 
         if (SDK_INT > Build.VERSION_CODES.KITKAT && SDK_INT < Build.VERSION_CODES.M) {
             alarmManager.setInexactRepeating(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(),
-                    AlarmManager.INTERVAL_DAY,
-                    getPendingIntent(context)
+                    AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, getPendingIntent(context)
             );
         } else if (SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
-                    calendar.getTimeInMillis(), getPendingIntent(context));
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,   calendar.getTimeInMillis(), getPendingIntent(context));
         }
     }
 
@@ -100,15 +96,10 @@ public class DailyReminderReceiver extends BroadcastReceiver {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         alarmManager.cancel(getPendingIntent(context));
-//        notificationManager.cancelAll();
     }
 
     private static PendingIntent getPendingIntent(Context context) {
-        /* get the application context */
         Intent alarmIntent = new Intent(context, DailyReminderReceiver.class);
-
-        boolean isAlarmOn = (PendingIntent.getBroadcast(context, NOTIFICATION_ID, alarmIntent,
-                PendingIntent.FLAG_NO_CREATE) != null);
 
         return PendingIntent.getBroadcast(context, NOTIFICATION_ID, alarmIntent,
                 PendingIntent.FLAG_CANCEL_CURRENT);

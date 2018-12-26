@@ -3,6 +3,9 @@
     package="com.adryanev.dicoding.mymoviecatalogue">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <permission
         android:name="com.adryanev.dicoding.mymoviecatalogue.READ_DATABASE"
