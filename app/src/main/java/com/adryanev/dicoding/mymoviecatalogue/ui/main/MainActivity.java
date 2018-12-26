@@ -7,14 +7,20 @@ import android.os.Bundle;
 import android.provider.Settings;
 
 import com.adryanev.dicoding.mymoviecatalogue.adapters.SearchAdapter;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.movie.Movie;
 import com.adryanev.dicoding.mymoviecatalogue.data.entities.search.Search;
+import com.adryanev.dicoding.mymoviecatalogue.data.entities.upcoming.Result;
+import com.adryanev.dicoding.mymoviecatalogue.jobs.DailyReminderReceiver;
+import com.adryanev.dicoding.mymoviecatalogue.jobs.ReleaseTodayReceiver;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.favourite.FavouriteFragment;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.now_playing.NowPlayingFragment;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.popular.PopularFragment;
 import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingFragment;
+import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingViewModel;
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ActivityUtils;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
+import com.adryanev.dicoding.mymoviecatalogue.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -41,7 +47,10 @@ import com.adryanev.dicoding.mymoviecatalogue.adapters.TabPagerAdapter;
 import com.adryanev.dicoding.mymoviecatalogue.ui.search.SearchActivity;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import timber.log.Timber;
 
@@ -53,6 +62,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     SearchAdapter adapter;
     BottomNavigationView bottomNavigationView;
     FrameLayout frameLayout;
+    DailyReminderReceiver dailyReminderReceiver;
+    UpcomingViewModel upcomingViewModel;
+    ReleaseTodayReceiver releaseTodayReceiver;
+    SessionManager manager;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -60,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        upcomingViewModel = ViewModelProviders.of(this).get(UpcomingViewModel.class);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         frameLayout = findViewById(R.id.container_frame);
@@ -81,7 +95,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 startActivity(i);
             }
         });
+        manager = new SessionManager(this);
+
+        if(manager.isFirstLaunch()){
+            dailyReminderReceiver = new DailyReminderReceiver();
+            dailyReminderReceiver.setRepeatingAlarm(this);
+            manager.setFirstLaunch(false);
+
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        releaseTodayReceiver = new ReleaseTodayReceiver();
+
     }
 
 
@@ -143,6 +167,35 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             public void onChanged(List<Search> searches) {
                 Timber.d("Set data search: %s to adapter",query);
                 adapter.setSearches(searches);
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+        final String currentDate = dateFormat.format(date);
+
+        upcomingViewModel.getUpcoming().observe(this, new Observer<List<Result>>() {
+            @Override
+            public void onChanged(List<Result> results) {
+
+                for (Result rs: results){
+                    if(rs.getReleaseDate().equals(currentDate)){
+                        releaseTodayReceiver.setRepeatingAlarm(MainActivity.this, rs);
+                        Timber.d("Release Today: %s",rs.getTitle());
+
+                    }
+                    else{
+                        Timber.d("Release Not Today: %s (%s)",rs.getTitle(),rs.getReleaseDate());
+                    }
+
+                }
+//                releaseTodayReceiver.setRepeatingAlarm(MainActivity.this, results.get(0));
+
+
             }
         });
     }

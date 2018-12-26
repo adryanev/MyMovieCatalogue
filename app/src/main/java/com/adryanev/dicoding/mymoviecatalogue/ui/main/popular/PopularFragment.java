@@ -54,7 +54,7 @@ public class PopularFragment extends Fragment {
 
     }
 
-    private void prepareData() { ;
+    private void prepareData() {
         viewModel.getPopular().observe(getActivity(), new Observer<List<Search>>() {
             @Override
             public void onChanged(List<Search> searches) {

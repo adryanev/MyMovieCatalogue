@@ -1,10 +1,12 @@
 package com.adryanev.dicoding.mymoviecatalogue.data.entities.favourite;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.adryanev.dicoding.mymoviecatalogue.config.Config;
+import com.adryanev.dicoding.mymoviecatalogue.data.DatabaseContract;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
@@ -100,4 +102,10 @@ public class Favourite implements Parcelable {
             return new Favourite[size];
         }
     };
+    public Favourite(Cursor cursor){
+        this.id = DatabaseContract.getColumnInt(cursor,Config.Database.KEY_ID);
+        this.poster = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_POSTER);
+        this.title = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_TITLE);
+        this.releaseDate = DatabaseContract.getColumnString(cursor,DatabaseContract.FavouriteColumns.KEY_RELEASE_DATE);
+    }
 }

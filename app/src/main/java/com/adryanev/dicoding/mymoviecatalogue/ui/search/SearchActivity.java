@@ -67,7 +67,7 @@ public class SearchActivity extends AppCompatActivity {
         nestedScrollView = findViewById(R.id.search_scroll_view);
         searchBar = findViewById(R.id.search_edit_text);
         button = findViewById(R.id.imageButton);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_search);
+        recyclerView = findViewById(R.id.rv_search);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 //        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL);
