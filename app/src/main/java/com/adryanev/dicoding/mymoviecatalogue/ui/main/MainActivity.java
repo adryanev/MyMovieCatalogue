@@ -20,6 +20,7 @@ import com.adryanev.dicoding.mymoviecatalogue.ui.main.upcoming.UpcomingViewModel
 import com.adryanev.dicoding.mymoviecatalogue.ui.moviedetail.MovieDetailActivity;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ActivityUtils;
 import com.adryanev.dicoding.mymoviecatalogue.utils.ItemClickSupport;
+import com.adryanev.dicoding.mymoviecatalogue.utils.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     DailyReminderReceiver dailyReminderReceiver;
     UpcomingViewModel upcomingViewModel;
     ReleaseTodayReceiver releaseTodayReceiver;
+    SessionManager manager;
     private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
@@ -93,13 +95,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 startActivity(i);
             }
         });
+        manager = new SessionManager(this);
 
+        if(manager.isFirstLaunch()){
+            dailyReminderReceiver = new DailyReminderReceiver();
+            dailyReminderReceiver.setRepeatingAlarm(this);
+            manager.setFirstLaunch(false);
 
-
+        }
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        dailyReminderReceiver = new DailyReminderReceiver();
         releaseTodayReceiver = new ReleaseTodayReceiver();
-        dailyReminderReceiver.setRepeatingAlarm(this);
+
     }
 
 
