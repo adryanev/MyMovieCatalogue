@@ -4,7 +4,6 @@ Submission Akhir dari MADE Dicoding
 ## Submission
 Untuk menyelesaikan modul Extended Application, Anda harus membuat aplikasi lanjutan dari modul project Basis Data yaitu Catalogue Movie. Aplikasi Catalogue Movie ditambah fitur baru yaitu StackWidget & Reminder.
 
-
 ### Syarat
 
 1. Tambahkan widget favorit movie dengan menggunakan StackWidget.
